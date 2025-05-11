@@ -36,5 +36,5 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
     uac_admin=True,
-    icon=['C:\\Users\\Owner\\Desktop\\TyAppsLauncherV2.0 for everyone\\assets\\taiyaki.ico'],
+    icon=['C:\\Users\\Owner\\Desktop\\TyAppsLauncherV1\\assets\\taiyaki.ico'],
 )

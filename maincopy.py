@@ -8,10 +8,10 @@ from pathlib import Path
 from functools import partial
 
 # バージョン情報
-Version = 1.0
+Version = 1.2
 GITHUB_REPO = "https://github.com/BakedTaiyaki093/TyAppsLauncher"
 VERSION_URL = "https://raw.githubusercontent.com/BakedTaiyaki093/TyAppsLauncher/main/Version.txt"
-UPDATE_URL = "https://github.com/BakedTaiyaki093/TyAppsLauncher/releases/latest/download/TyAppsLauncher_latest.zip"
+UPDATE_URL = "https://github.com/BakedTaiyaki093/TyAppsLauncher/raw/refs/heads/main/releases/TyAppsLauncher_latest.zip"
 
 # 実行環境に適した `APP_FOLDER` の設定
 if getattr(sys, 'frozen', False):  # .exe で動作中なら

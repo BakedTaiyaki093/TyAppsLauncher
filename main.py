@@ -10,7 +10,7 @@ from functools import partial
 # バージョン情報
 Version = 1.0
 GITHUB_REPO = "https://github.com/BakedTaiyaki093/TyAppsLauncher"
-VERSION_URL = "https://raw.githubusercontent.com/BakedTaiyaki093/TyAppsLauncher/main/version.txt"
+VERSION_URL = "https://raw.githubusercontent.com/BakedTaiyaki093/TyAppsLauncher/main/Version.txt"
 UPDATE_URL = "https://github.com/BakedTaiyaki093/TyAppsLauncher/releases/latest/download/TyAppsLauncher_latest.zip"
 APP_FOLDER = Path(__file__).parent  # アプリ本体のあるフォルダ
 

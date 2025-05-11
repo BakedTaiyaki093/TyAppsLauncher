@@ -10,7 +10,7 @@ from functools import partial
 # バージョン情報
 Version = 1.0
 GITHUB_REPO = "https://github.com/BakedTaiyaki093/TyAppsLauncher"
-VERSION_URL = "https://raw.githubusercontent.com/BakedTaiyaki093/TyAppsLauncher/main/Version.txt"
+VERSION_URL = "https://raw.githubusercontent.com/BakedTaiyaki093/TyAppsLauncher/refs/heads/main/Version.txt"
 UPDATE_URL = "https://github.com/BakedTaiyaki093/TyAppsLauncher/releases/latest/download/TyAppsLauncher_latest.zip"
 APP_FOLDER = Path(__file__).parent  # アプリ本体のあるフォルダ
 
@@ -132,7 +132,7 @@ def create_button_in_window(button_label):
 
 # **メインウィンドウの作成**
 root = tk.Tk()
-root.title(f"TyAppsLauncher@V{Version}")
+root.title(f"Main window TAL@V{Version}")
 root.geometry("400x300")
 
 button_function = tk.Button(root, text="Create appspath_X.txt in Typath folder", command=createfile)

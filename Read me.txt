@@ -1,0 +1,3 @@
+アプリを追加したいときは「Typath」フォルダの「appspath_X.txt」にダブルクォート("")を除きまるかっこや日本語などがない英語のみのパスで書いて下さい。
+ボタンの名前を変えたいときはPathIDButtonList.txtに対応する行ずつ名前を書いてください
+Created by Copilot

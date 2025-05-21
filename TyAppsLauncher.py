@@ -9,21 +9,22 @@ from functools import partial
 import webbrowser as wbb
 
 # バージョン情報
-Version = 1.3
+Version = 1.5
 GITHUB_REPO = "https://github.com/BakedTaiyaki093/TyAppsLauncher"
 VERSION_URL = "https://raw.githubusercontent.com/BakedTaiyaki093/TyAppsLauncher/main/Version.txt"
 UPDATE_URL = "https://github.com/BakedTaiyaki093/TyAppsLauncher/raw/refs/heads/main/releases/TyAppsLauncher_latest.zip"
-# 実行環境に適した `APP_FOLDER` の設定
-if getattr(sys, 'frozen', False):  # .exe で動作中なら
-    APP_FOLDER = Path.home() / "Documents" / "TyAppsLauncher"
-else:  # Pythonスクリプトとして動作中なら
-    APP_FOLDER = Path(__file__).parent
 
-APP_FOLDER.mkdir(exist_ok=True)  # フォルダがなければ作成
+# `dirct.txt` からフォルダパスを取得
+with open("dirct.txt", "r", encoding="utf-8") as file:
+    APP_FOLDER = Path(file.readline().strip())
 
-# "Typath" フォルダを作成
+# フォルダの存在確認（作成はしない）
+if not APP_FOLDER.exists():
+    print(f"エラー: 指定されたフォルダが存在しません → {APP_FOLDER}")
+    sys.exit(1)  # フォルダがない場合は処理を停止
+
+# "Typath" フォルダのパスを設定（dirct.txtの中身を利用）
 folder = APP_FOLDER / "Typath"
-folder.mkdir(exist_ok=True)
 
 # ボタン情報のテキストファイル（"Typath" フォルダ内に保存）
 button_names_file = folder / "PathIDButtonList.txt"
@@ -40,13 +41,13 @@ if button_names_file.exists():
         button_labels = [line.strip() for line in f.readlines()]
 else:
     button_labels = []
+
 def open_explorer():
-    subprocess.Popen(["explorer", r"C:\Users\Owner\Documents\TyAppsLauncher\Typath"], shell= True)
-    
+    subprocess.Popen(["explorer", str(folder)], shell=True)
+
 def open_github():
     wbb.open(GITHUB_REPO)
-    
-    
+
 def check_update():
     """最新バージョンを確認"""
     try:
@@ -91,7 +92,7 @@ def restart_app():
     label.config(text="アプリを再起動します...")
     python = sys.executable
     os.startfile([python, *sys.argv])
-    sys.exit                         # プロセスを新しいバージョンに置き換え
+    sys.exit()
 
 def createfile():
     """新しいボタンを作成し、表示名・ファイルパスを保存"""
@@ -154,11 +155,10 @@ button_function.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
 
 label = tk.Label(root, text="Create new appspath_X.txt in Typath folder after clicking the button")
 label.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
-button_ep = tk.Button(root, text= "Open explorer", command= open_explorer)
+button_ep = tk.Button(root, text= "Open explorer", command=open_explorer)
 button_ep.place(relx = 0.5, rely = 0.7, anchor= tk.CENTER)
-button_gh = tk.Button(root, text = "Open GitHub", command = open_github)
+button_gh = tk.Button(root, text = "Open GitHub", command=open_github)
 button_gh.place(relx = 0.5, rely = 0.6, anchor= tk.CENTER)
-
 
 # **別ウィンドウにボタンを表示**
 rootf = tk.Toplevel(root)

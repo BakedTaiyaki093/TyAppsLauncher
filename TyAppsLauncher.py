@@ -12,7 +12,7 @@ import webbrowser as wbb
 Version = 1.5
 GITHUB_REPO = "https://github.com/BakedTaiyaki093/TyAppsLauncher"
 VERSION_URL = "https://raw.githubusercontent.com/BakedTaiyaki093/TyAppsLauncher/main/Version.txt"
-UPDATE_URL = "https://github.com/BakedTaiyaki093/TyAppsLauncher/raw/refs/heads/main/releases/TyAppsLauncher_latest.zip"
+UPDATE_URL = "https://github.com/BakedTaiyaki093/TyAppsLauncher/raw/refs/heads/main/releases/TyAppsLauncher.zip"
 
 # `dirct.txt` からフォルダパスを取得
 with open("dirct.txt", "r", encoding="utf-8") as file:

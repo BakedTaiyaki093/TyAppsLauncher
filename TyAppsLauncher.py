@@ -63,8 +63,15 @@ def loaddirct():
        # 選択されたパスを dirct.txt に保存
        with open("dirct.txt", "w", encoding="utf-8") as file:
            file.write(path)
-       mb.showinfo("Success!", f"Directory saved!: {path}") 
-   
+       result = mb.askyesno("Success!", f"Directory saved!: {path}\nPlease restart now. \nDo you want to restart the app?")
+       if result:
+              mb.showinfo("Restarting...", "The app will now restart to apply the new directory.")
+              root.destroy()
+              
+              python = sys.executable
+              os.execl(python, python, *sys.argv)
+       elif not result:
+                mb.showinfo("Info","Please restart the app manually now.")   
     
     
  
@@ -79,7 +86,7 @@ def check_update():
 
             result = mb.askyesnocancel(title= "Update Available", message=f"A new version[V{latest_version}] is available but we recommend download TyAppsDownLoader. Do you want to open the download page?\n Yes: Open GitHub\n No: Latest DownLoad\n Cancel: Do nothing")
             if result == True:
-                 wbb.open(GITHUB_REPO)
+                 open_github()
             if result == False:
                  wbb.open(DOWNLOAD_URL)
                   
@@ -88,6 +95,7 @@ def check_update():
             
         else:
             label.config(text="You are using the latest version.")
+            mb.showinfo("Update is nothing.", "Not find a new version, You are using the latest version now.")
     except Exception as e:
         label.config(text=f"Update Check Error: {e}")
 
@@ -145,33 +153,36 @@ def create_button_in_window(button_label):
     btn = tk.Button(rootf, text=button_label, command=function_dict.get(button_label, lambda: print(f"関数が見つかりません: {button_label}")))
     btn.pack()
 
+
 # **メインウィンドウの作成**
 root = tk.Tk()
 
 root.title(f"TAL Main Window")
-root.geometry("400x300")
+root.geometry("300x200+500+300")  # ウィンドウのサイズと位置を設定
+ # アイコンの設定（必要に応じて変更）
+root.iconbitmap("assets/tal3.ico")# アイコンの設定（必要に応じて変更）
 menubar = tk.Menu(root)
 filemenu = tk.Menu(menubar, tearoff=0)
 filemenu.add_command(label="Open folders...", command=loaddirct)
+filemenu.add_command(label="Open GitHub", command=open_github)
+filemenu.add_command(label="Open Explorer", command=open_explorer)
+filemenu.add_command(label="Check Update", command=check_update)
 filemenu.add_separator()
 filemenu.add_command(label="Exit", command=root.quit)
-menubar.add_cascade(label="File", menu=filemenu)
+menubar.add_cascade(label="Menu", menu=filemenu)
 root.config(menu=menubar)
 button_function = tk.Button(root, text="Create appspath_X.txt in Typath folder", command=createfile)
 button_function.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
 
 label = tk.Label(root, text="Create new appspath_X.txt in Typath folder after clicking the button")
 label.place(relx=0.5, rely=0.1, anchor=tk.CENTER)
-button_ep = tk.Button(root, text= "Open explorer", command=open_explorer)
-button_ep.place(relx = 0.5, rely = 0.7, anchor= tk.CENTER)
-button_gh = tk.Button(root, text = "Open GitHub", command=open_github)
-button_gh.place(relx = 0.5, rely = 0.6, anchor= tk.CENTER)
+
 
 # **別ウィンドウにボタンを表示**
 rootf = tk.Toplevel(root)
 rootf.title(f"TyAppsLauncher@V{Version}")
-rootf.geometry("400x800")
-
+rootf.geometry("400x800+500+300")  # 別ウィンドウのサイズと位置を設定
+rootf.iconbitmap("assets/tal3.ico")# アイコンの設定（必要に応じて変更）
 # **アプリ起動時にアップデートを確認**
 check_update()
 

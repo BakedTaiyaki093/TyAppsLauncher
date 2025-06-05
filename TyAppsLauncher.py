@@ -1,4 +1,7 @@
 import tkinter as tk
+from tkinter import messagebox as mb
+from tkinter import filedialog as fd
+from tkinter import ttk
 import subprocess
 import requests
 import sys
@@ -9,11 +12,12 @@ from functools import partial
 import webbrowser as wbb
 
 # バージョン情報
-Version = 1.5
-GITHUB_REPO = "https://github.com/BakedTaiyaki093/TyAppsLauncher"
+Version = 1.6
+GITHUB_REPO = "https://github.com/BakedTaiyaki093"
 VERSION_URL = "https://raw.githubusercontent.com/BakedTaiyaki093/TyAppsLauncher/main/Version.txt"
-UPDATE_URL = "https://github.com/BakedTaiyaki093/TyAppsLauncher/raw/refs/heads/main/releases/TyAppsLauncher.zip"
-
+DOWNLOAD_URL = "https://github.com/BakedTaiyaki093/TyAppsLauncher/raw/refs/heads/main/releases/TyAppsLauncher.zip"
+response = requests.get(VERSION_URL)
+latest_version = float(response.text.strip())
 # `dirct.txt` からフォルダパスを取得
 with open("dirct.txt", "r", encoding="utf-8") as file:
     APP_FOLDER = Path(file.readline().strip())
@@ -23,10 +27,10 @@ if not APP_FOLDER.exists():
     print(f"エラー: 指定されたフォルダが存在しません → {APP_FOLDER}")
     sys.exit(1)  # フォルダがない場合は処理を停止
 
-# "Typath" フォルダのパスを設定（dirct.txtの中身を利用）
-folder = APP_FOLDER / "Typath"
+# フォルダのパスを設定（dirct.txtの中身を利用）
+folder = APP_FOLDER
 
-# ボタン情報のテキストファイル（"Typath" フォルダ内に保存）
+# ボタン情報のテキストファイル
 button_names_file = folder / "PathIDButtonList.txt"
 
 # 関数を管理する辞書
@@ -48,51 +52,47 @@ def open_explorer():
 def open_github():
     wbb.open(GITHUB_REPO)
 
+def loaddirct():
+   
+       # フォルダ選択ダイアログを表示
+       path = fd.askdirectory(title="Please select the folder to save paths")
+       if not path:
+           mb.showwarning("Umm... Warning", "No folder selected! Please again select the folder!")
+           return
+
+       # 選択されたパスを dirct.txt に保存
+       with open("dirct.txt", "w", encoding="utf-8") as file:
+           file.write(path)
+       mb.showinfo("Success!", f"Directory saved!: {path}") 
+   
+    
+    
+ 
+
 def check_update():
     """最新バージョンを確認"""
     try:
-        response = requests.get(VERSION_URL)
-        latest_version = float(response.text.strip())  # 最新バージョン取得
+ 
         if latest_version > Version:
-            label.config(text=f"新しいバージョン {latest_version} が利用可能です。アップデートを開始します。")
-            update_app()
+            label.config(text=f"You can use a new version[@V{latest_version}] now.")
+            
+
+            result = mb.askyesnocancel(title= "Update Available", message=f"A new version[V{latest_version}] is available but we recommend download TyAppsDownLoader. Do you want to open the download page?\n Yes: Open GitHub\n No: Latest DownLoad\n Cancel: Do nothing")
+            if result == True:
+                 wbb.open(GITHUB_REPO)
+            if result == False:
+                 wbb.open(DOWNLOAD_URL)
+                  
+             
+            
+            
         else:
-            label.config(text="最新のバージョンを使用しています。")
+            label.config(text="You are using the latest version.")
     except Exception as e:
-        label.config(text=f"アップデート確認エラー: {e}")
+        label.config(text=f"Update Check Error: {e}")
 
-def update_app():
-    """GitHubから最新版をダウンロード＆適用"""
-    try:
-        response = requests.get(UPDATE_URL, stream=True)
-        update_file = APP_FOLDER / "update.zip"
 
-        with open(update_file, "wb") as f:
-            for chunk in response.iter_content(chunk_size=8192):
-                f.write(chunk)
-
-        label.config(text="ダウンロード完了。アップデートを適用します...")
-        apply_update(update_file)
-    except Exception as e:
-        label.config(text=f"アップデートエラー: {e}")
-
-def apply_update(update_file):
-    """アップデートを適用"""
-    try:
-        with zipfile.ZipFile(update_file, "r") as zip_ref:
-            zip_ref.extractall(APP_FOLDER)
-
-        label.config(text="アップデートが完了しました。アプリを再起動します。")
-        restart_app()
-    except Exception as e:
-        label.config(text=f"アップデート適用エラー: {e}")
-
-def restart_app():
-    """アプリを再起動"""
-    label.config(text="アプリを再起動します...")
-    python = sys.executable
-    os.startfile([python, *sys.argv])
-    sys.exit()
+    
 
 def createfile():
     """新しいボタンを作成し、表示名・ファイルパスを保存"""
@@ -147,9 +147,16 @@ def create_button_in_window(button_label):
 
 # **メインウィンドウの作成**
 root = tk.Tk()
-root.title(f"Main window TAL@V{Version}")
-root.geometry("400x300")
 
+root.title(f"TAL Main Window")
+root.geometry("400x300")
+menubar = tk.Menu(root)
+filemenu = tk.Menu(menubar, tearoff=0)
+filemenu.add_command(label="Open folders...", command=loaddirct)
+filemenu.add_separator()
+filemenu.add_command(label="Exit", command=root.quit)
+menubar.add_cascade(label="File", menu=filemenu)
+root.config(menu=menubar)
 button_function = tk.Button(root, text="Create appspath_X.txt in Typath folder", command=createfile)
 button_function.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
 

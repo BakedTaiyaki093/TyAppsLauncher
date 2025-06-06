@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import messagebox as mb
 from tkinter import filedialog as fd
 from tkinter import ttk
+from tkinter import IntVar
+# -*- coding: utf-8 -*-
 import subprocess
 import requests
 import sys
@@ -12,15 +14,21 @@ from functools import partial
 import webbrowser as wbb
 
 # バージョン情報
-Version = 1.6
+Version = 1.7
 GITHUB_REPO = "https://github.com/BakedTaiyaki093"
 VERSION_URL = "https://raw.githubusercontent.com/BakedTaiyaki093/TyAppsLauncher/main/Version.txt"
 DOWNLOAD_URL = "https://github.com/BakedTaiyaki093/TyAppsLauncher/raw/refs/heads/main/releases/TyAppsLauncher.zip"
+restart = "launch.bat"
 response = requests.get(VERSION_URL)
 latest_version = float(response.text.strip())
 # `dirct.txt` からフォルダパスを取得
 with open("dirct.txt", "r", encoding="utf-8") as file:
     APP_FOLDER = Path(file.readline().strip())
+
+# Settings.txtから設定値を読み込む
+# (ここでは特に設定値は使用しないが、必要に応じて読み込むことができる)
+with open("Settings.txt", "r", encoding="utf-8") as file:
+    SETTINGS = int(file.readline().strip())
 
 # フォルダの存在確認（作成はしない）
 if not APP_FOLDER.exists():
@@ -29,6 +37,9 @@ if not APP_FOLDER.exists():
 
 # フォルダのパスを設定（dirct.txtの中身を利用）
 folder = APP_FOLDER
+
+# settings を設定
+settings = SETTINGS
 
 # ボタン情報のテキストファイル
 button_names_file = folder / "PathIDButtonList.txt"
@@ -45,9 +56,24 @@ if button_names_file.exists():
         button_labels = [line.strip() for line in f.readlines()]
 else:
     button_labels = []
+def verin():
+    """バージョン情報を表示"""
+    mb.showinfo("Version Information", f"TyAppsLauncher Version: {Version}\nLatest Version: {latest_version}\nGitHub Repository: {GITHUB_REPO}")
+
+def write_settings():
+    """設定を保存"""
+    with open("Settings.txt", "w", encoding="utf-8") as file:
+        file.write(str(pow_1.get()))  # pow_1の値を保存
+    mb.showinfo("Settings Saved", "Settings have been saved successfully.")
 
 def open_explorer():
     subprocess.Popen(["explorer", str(folder)], shell=True)
+
+def restartapp():
+    """アプリを再起動"""
+    mb.showinfo("Restarting...", "The app will now restart.")
+    root.destroy()
+    os.system(restart)  # launch.batを実行してアプリを再起動
 
 def open_github():
     wbb.open(GITHUB_REPO)
@@ -65,13 +91,11 @@ def loaddirct():
            file.write(path)
        result = mb.askyesno("Success!", f"Directory saved!: {path}\nPlease restart now. \nDo you want to restart the app?")
        if result:
-              mb.showinfo("Restarting...", "The app will now restart to apply the new directory.")
-              root.destroy()
+            restartapp()
               
-              python = sys.executable
-              os.execl(python, python, *sys.argv)
+              
        elif not result:
-                mb.showinfo("Info","Please restart the app manually now.")   
+            mb.showinfo("Message","Please restart the app manually now.")   
     
     
  
@@ -86,7 +110,7 @@ def check_update():
 
             result = mb.askyesnocancel(title= "Update Available", message=f"A new version[V{latest_version}] is available but we recommend download TyAppsDownLoader. Do you want to open the download page?\n Yes: Open GitHub\n No: Latest DownLoad\n Cancel: Do nothing")
             if result == True:
-                 open_github()
+                 open_github() 
             if result == False:
                  wbb.open(DOWNLOAD_URL)
                   
@@ -158,7 +182,7 @@ def create_button_in_window(button_label):
 root = tk.Tk()
 
 root.title(f"TAL Main Window")
-root.geometry("300x200+500+300")  # ウィンドウのサイズと位置を設定
+root.geometry("400x200+500+300")  # ウィンドウのサイズと位置を設定
  # アイコンの設定（必要に応じて変更）
 root.iconbitmap("assets/tal3.ico")# アイコンの設定（必要に応じて変更）
 menubar = tk.Menu(root)
@@ -166,10 +190,22 @@ filemenu = tk.Menu(menubar, tearoff=0)
 filemenu.add_command(label="Open folders...", command=loaddirct)
 filemenu.add_command(label="Open GitHub", command=open_github)
 filemenu.add_command(label="Open Explorer", command=open_explorer)
-filemenu.add_command(label="Check Update", command=check_update)
+
+filemenu.add_command(label="Restart", command=restartapp)
 filemenu.add_separator()
 filemenu.add_command(label="Exit", command=root.quit)
 menubar.add_cascade(label="Menu", menu=filemenu)
+# 設定メニューの作成
+pow_1 = IntVar()
+pow_1.set(0)# 初期値を0に設定
+pow_1.set(settings) # Settings.txtから読み込んだ値を設定
+settingmenu = tk.Menu(menubar, tearoff=0)
+settingmenu.add_command(label="Version Information", command=verin)
+settingmenu.add_command(label="Check Update", command=check_update)
+settingmenu.add_checkbutton(label="Enable check update when app launch", variable=pow_1, command=write_settings)
+menubar.add_cascade(label="Settings", menu=settingmenu)
+
+
 root.config(menu=menubar)
 button_function = tk.Button(root, text="Create appspath_X.txt in Typath folder", command=createfile)
 button_function.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
@@ -184,7 +220,8 @@ rootf.title(f"TyAppsLauncher@V{Version}")
 rootf.geometry("400x800+500+300")  # 別ウィンドウのサイズと位置を設定
 rootf.iconbitmap("assets/tal3.ico")# アイコンの設定（必要に応じて変更）
 # **アプリ起動時にアップデートを確認**
-check_update()
+if pow_1.get() == 1: 
+ check_update()
 
 # **アプリ起動時にボタンを復元**
 for file_num, button_label in enumerate(button_labels, start=1):

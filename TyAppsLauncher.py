@@ -60,6 +60,11 @@ def verin():
     """バージョン情報を表示"""
     mb.showinfo("Version Information", f"TyAppsLauncher Version: {Version}\nLatest Version: {latest_version}\nGitHub Repository: {GITHUB_REPO}")
 
+def exit_app():
+    """アプリを終了"""
+    if mb.askyesno("Exit", "Are you sure you want to exit?"):
+        root.quit()
+
 def write_settings():
     """設定を保存"""
     with open("Settings.txt", "w", encoding="utf-8") as file:
@@ -71,9 +76,9 @@ def open_explorer():
 
 def restartapp():
     """アプリを再起動"""
-    mb.showinfo("Restarting...", "The app will now restart.")
-    root.destroy()
-    os.system(restart)  # launch.batを実行してアプリを再起動
+    if mb.askyesno("Restarting", "Are you sure you want to restarting?"):
+     root.destroy()
+     os.system(restart)  # launch.batを実行してアプリを再起動
 
 def open_github():
     wbb.open(GITHUB_REPO)
@@ -182,7 +187,7 @@ def create_button_in_window(button_label):
 root = tk.Tk()
 
 root.title(f"TAL Main Window")
-root.geometry("400x200+500+300")  # ウィンドウのサイズと位置を設定
+root.geometry("400x250+500+300")  # ウィンドウのサイズと位置を設定
  # アイコンの設定（必要に応じて変更）
 root.iconbitmap("assets/tal3.ico")# アイコンの設定（必要に応じて変更）
 menubar = tk.Menu(root)
@@ -193,7 +198,7 @@ filemenu.add_command(label="Open Explorer", command=open_explorer)
 
 filemenu.add_command(label="Restart", command=restartapp)
 filemenu.add_separator()
-filemenu.add_command(label="Exit", command=root.quit)
+filemenu.add_command(label="Exit", command=exit_app)
 menubar.add_cascade(label="Menu", menu=filemenu)
 # 設定メニューの作成
 pow_1 = IntVar()
@@ -208,7 +213,7 @@ menubar.add_cascade(label="Settings", menu=settingmenu)
 
 root.config(menu=menubar)
 button_function = tk.Button(root, text="Create appspath_X.txt in Typath folder", command=createfile)
-button_function.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
+button_function.place(relx=0.5, rely=0.3, anchor=tk.CENTER)
 
 label = tk.Label(root, text="Create new appspath_X.txt in Typath folder after clicking the button")
 label.place(relx=0.5, rely=0.1, anchor=tk.CENTER)

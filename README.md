@@ -5,8 +5,8 @@ dirct.txtとSettings.txtとlaunch.batはTyAppsLauncher.exe本体と同じとこ�
 起動方法はTyAppsLauncher.exeかlaunch.batをダブルクリックしてください（おすすめはexeをそのまま実行すること）
 ## フォルダの設定方法
 Menu > Open folders...をクリックしてそこからファイルを選択すると選択できます。そのあとに再起動をかけることでそのフォルダーを認識して起動します。<画像>  
-![説明1](assets\picture1.png)  
-![説明2](assets\picture2.png)
+![説明1](https://github.com/BakedTaiyaki093/TyAppsLauncher/blob/main/assets/picture1.png?raw=true)  
+![説明2](https://github.com/BakedTaiyaki093/TyAppsLauncher/blob/main/assets/picture2.png?raw=true)
 ---
 # 過去のアップデート
 V1.0 初リリース！  

@@ -14,13 +14,14 @@ from functools import partial
 import webbrowser as wbb
 
 # バージョン情報
-Version = 1.7
+Version = 1.71
 GITHUB_REPO = "https://github.com/BakedTaiyaki093"
 VERSION_URL = "https://raw.githubusercontent.com/BakedTaiyaki093/TyAppsLauncher/main/Version.txt"
 DOWNLOAD_URL = "https://github.com/BakedTaiyaki093/TyAppsLauncher/raw/refs/heads/main/releases/TyAppsLauncher.zip"
 restart = "launch.bat"
 response = requests.get(VERSION_URL)
 latest_version = float(response.text.strip())
+
 # `dirct.txt` からフォルダパスを取得
 with open("dirct.txt", "r", encoding="utf-8") as file:
     APP_FOLDER = Path(file.readline().strip())
@@ -225,6 +226,7 @@ rootf.title(f"TyAppsLauncher@V{Version}")
 rootf.geometry("400x800+500+300")  # 別ウィンドウのサイズと位置を設定
 rootf.iconbitmap("assets/tal3.ico")# アイコンの設定（必要に応じて変更）
 # **アプリ起動時にアップデートを確認**
+
 if pow_1.get() == 1: 
  check_update()
 

@@ -1,5 +1,5 @@
 # アプリの概要
-TyAppsLauncherはインストール不要の登録した他のアプリをまとめるアプリランチャーです。
+TyAppsLauncherはインストール不要の登録した他のアプリをまとめるアプリランチャーです。インストールが不要なのでzipを展開すればすぐに使用できます。
 # 使い方について
 基本的にライセンスはありませんが、そのままコピーして公開するのはやめてください。コードを改造して公開したりするのは大歓迎です。  
 # アプリの使い方
@@ -7,15 +7,18 @@ dirct.txtとSettings.txtとlaunch.batはTyAppsLauncher.exe本体と同じとこ�
 起動方法はlaunch.batを起動してください（exeを開いても動きます）
 ![説明0](https://github.com/BakedTaiyaki093/TyAppsLauncher/blob/main/assets/picture3.png?raw=true)
 ## フォルダの設定方法
-Menu > Open folders...をクリックしてそこからファイルを選択すると選択できます。そのあとに再起動をかけることでそのフォルダーを認識して起動します。(dirct.txtに直接パスを書き込んでもよいです。)<画像>  
+Menu > Open folders...をクリックしてそこからファイルを選択すると選択できます。そのあとに再起動をかけることでそのフォルダーを認識して起動します。(dirct.txtに直接パスを書き込んでもよいです。)<画像>
+
 ![説明1](https://github.com/BakedTaiyaki093/TyAppsLauncher/blob/main/assets/picture1.png?raw=true)  
 ![説明2](https://github.com/BakedTaiyaki093/TyAppsLauncher/blob/main/assets/picture2.png?raw=true)
 ## ファイルパスの指定
 フォルダを指定したらメインウィンドウのボタンをクリックしてappspath_X.txtX(は数字)の中に起動したいアプリのexeやbatを登録してください。この時""は消しておいてください。またフォルダ名に漢字などがあると動かない可能性が高いです。<画像>
-![説明3](https://github.com/BakedTaiyaki093/TyAppsLauncher/blob/main/assets/picture4.png?raw=true)
-ファイルパスはアプリを実行してタスクマネージャーからエクスプローラーを開き、パスのコピーを押すことでパスをコピーすることができます。
+
+![説明3](https://github.com/BakedTaiyaki093/TyAppsLauncher/blob/main/assets/picture4.png?raw=true)  
+ファイルパスはアプリを実行してタスクマネージャーからエクスプローラーを開き、パスのコピーを押すことでパスをコピーすることができます。  
 ![説明4](https://github.com/BakedTaiyaki093/TyAppsLauncher/blob/main/assets/picture5.png?raw=true)
 ![説明5](https://github.com/BakedTaiyaki093/TyAppsLauncher/blob/main/assets/picture6.png?raw=true)
+
 ---
 # 過去のアップデート
 ## V1.0 

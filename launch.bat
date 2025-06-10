@@ -13,6 +13,7 @@ title Preparing to terminate TyAppsLauncher...
 timeout /t 1 /nobreak >nul
 
 :: `taskkill` を非同期で実行
+start /B cmd /c "taskkill /F /IM tal.exe >nul 2>&1"
 start /B cmd /c "taskkill /F /IM TyAppsLauncher.exe >nul 2>&1"
 
 :: ピリオドのカウントを管理
@@ -33,9 +34,10 @@ if %count% GTR 3 set count=1
 
 :: `taskkill` の処理が終わったか確認
 tasklist | findstr /i "TyAppsLauncher.exe" >nul
+tasklist | findstr /i "tal.exe" >nul
 if %errorlevel% == 0 goto loop
 
 :: `taskkill` 完了後に `start` 実行
 title Launching TyAppsLauncher...
-start /B TyAppsLauncher.exe --app "TyApps" --args "--no-sandbox --disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --disable-web-security --disable-features=IsolateOrigins,site-per-process"
+start /B tal.exe --app "TyApps" --args "--no-sandbox --disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --disable-web-security --disable-features=IsolateOrigins,site-per-process"
 exit

@@ -55,8 +55,9 @@ GUIの変更が行われ、メニューバーを採用した。
 テーマ機能とパスワード機能を追加。それに伴いSettings.txtの読み取り処理を変更。すべてのウィンドウを一つにまとめ、最前面表示ができるようになった。インフォウィンドウを追加し、メニューバーに項目をいろいろ追加。メニューバーからこれをみれるようになった。かなりの大規模な機能追加アップデートとなった。今回からビルドの日も書いていくことにした。
 # 今後のアップデート
 現在はV1.8ですが、今後も改良は続けていく予定です。モチベなどでしないかもしれませんがね。  
-アプリにはアップデートを見つける機能がありますが今後のアプリ増加でわかりにくくなるかもしれないので[TyAppsDownLoader](https://github.com/BakedTaiyaki093/TyAppsDownloader)をダウンロードしてそこから管理することをおすすめします。
----
+アプリにはアップデートを見つける機能がありますが今後のアプリ増加でわかりにくくなるかもしれないので[TyAppsDownLoader](https://github.com/BakedTaiyaki093/TyAppsDownloader)をダウンロードしてそこから管理することをおすすめします。  
+## インストール版を開発中
+現在今の手軽なダウンロード版に加えてインストール版を開発中です。ひとまずの開発が完了すればGithubからインストーラーをダウンロードできるようにする予定です。
 # URLs
 [TyAppsDownLoader](https://github.com/BakedTaiyaki093/TyAppsDownloader)
 [TyAppsLauncher](https://github.com/BakedTaiyaki093/TyAppsLauncher)

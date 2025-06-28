@@ -16,16 +16,18 @@ import webbrowser as wbb
 import hashlib
 
 # バージョン情報
-Version = 1.8
+Version = 1.81
 GITHUB_REPO = "https://github.com/BakedTaiyaki093"
 GITHUB_TYAPPSLAUNCHER = "https://github.com/BakedTaiyaki093/TyAppsLauncher"
 VERSION_URL = "https://raw.githubusercontent.com/BakedTaiyaki093/TyAppsLauncher/main/Version.txt"
 DOWNLOAD_URL = "https://github.com/BakedTaiyaki093/TyAppsLauncher/raw/refs/heads/main/releases/TyAppsLauncher.zip"
-GITHUB_TYAPPSDOWNLOADER = "https://github.com/BakedTaiyaki093/TyAppsDownloader"
-TAD_VERSION_URL = "https://raw.githubusercontent.com/BakedTaiyaki093/TyAppsDownloader/main/version.txt"
+
+
 restart = "launch.bat"
 response = requests.get(VERSION_URL)
 latest_version = float(response.text.strip())
+
+talver = requests.get(VERSION_URL).text.strip()  # TyAppsLauncherの最新バージョンを取得
 
 
 # pow_1 = Settings.txtの1行目の値を保存するためのIntVar
@@ -262,16 +264,15 @@ def createroot():
 
 def createinfo():
     clear_widget()  # 既存のウィジェットをクリア
-    tadver = requests.get(TAD_VERSION_URL).text.strip()  # TyAppsDownloaderの最新バージョンを取得
-    talver = requests.get(VERSION_URL).text.strip()  # TyAppsLauncherの最新バージョンを取得
+
     root.title(f"TyAppsLauncher@V{Version} - Info Window")
     root.geometry("400x250+500+300")  # ウィンドウのサイズと位置を設定
     root.iconbitmap("assets/tal3.ico")  # アイコンの設定（必要に応じて変更）
     label = tk.Label(root, text="TyAppsLauncher is a simple app launcher. \n You can register apps easyly and launch them. :D")
     button_function= tk.Button(root, text=f"Open TyAppsLauncher@V{talver} GitHub", command=open_github_tal)
     button_function.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
-    button_function1 = tk.Button(root, text=f"Open TyAppsDownloader@V{tadver} GitHub", command=open_github_tad)
-    button_function1.place(relx=0.5, rely=0.65, anchor=tk.CENTER)
+    
+    
     button_function2 = tk.Button(root, text="Developed by BakedTaiyaki093", command=open_github)
     button_function2.place(relx=0.5, rely=0.8, anchor=tk.CENTER)
     label.place(relx=0.5, rely=0.3, anchor=tk.CENTER)
@@ -286,7 +287,7 @@ def createrootf():
     root.title(f"TyAppsLauncher@V{Version} - Apps Window")
     root.geometry("400x800+500+300")  # 別ウィンドウのサイズと位置を設定
     root.iconbitmap("assets/tal3.ico")# アイコンの設定（必要に応じて変更）
-    createbuttons()
+    root.after(100, createbuttons)  # ボタンを作成する関数を呼び出す
     createmenubar()
     pow_3.set(1)  # pow_3の値を0に設定
     pow_3save()  # pow_3の値をSettings.txtに保存
@@ -374,7 +375,7 @@ def createmenubar():
     filemenu.add_command(label="Open Explorer", command=open_explorer)
     filemenu.add_command(label="Open Author GitHub", command=open_github)
     filemenu.add_command(label="Open TyAppsLauncher GitHub", command=open_github_tal)
-    filemenu.add_command(label="Open TyAppsDownloader GitHub", command=open_github_tad)
+   
     filemenu.add_command(label="Open README", command=open_github_readme)
     
     filemenu.add_separator()
@@ -394,7 +395,7 @@ def createmenubar():
     settingmenu = tk.Menu(menubar, tearoff=0)
     settingmenu.add_command(label="Version Information", command=verin)
     settingmenu.add_command(label="Check Update", command=check_update)
-    settingmenu.add_checkbutton(label="Enable check update when app launch", variable=pow_1, command=pow_1save)
+    
     settingmenu.add_cascade(label="Theme", menu=thememenu)  # テーマメニューを追加
     settingmenu.add_command(label="Set Password", command=setpassword)
     settingmenu.add_checkbutton(label="Enable Password", variable=pow_6 , command=onpassword)
@@ -523,8 +524,7 @@ def open_github():
 def open_github_tal():
     wbb.open(GITHUB_TYAPPSLAUNCHER)
 
-def open_github_tad():
-    wbb.open(GITHUB_TYAPPSDOWNLOADER)
+
     
 def open_github_readme():
     """README.mdをGitHubで開く"""
@@ -552,29 +552,28 @@ def loaddir():
     
 
  
-
 def check_update():
     """最新バージョンを確認"""
+    global label
     try:
- 
         if latest_version > Version:
-            label.config(text=f"You can use a new version[@V{latest_version}] now.")
-            
-
-            result = mb.askyesnocancel(title= "Update Available", message=f"A new version[V{latest_version}] is available but we recommend download TyAppsDownLoader. Do you want to open the download page?\n Yes: Open GitHub\n No: Latest DownLoad\n Cancel: Do nothing")
+            result = mb.askyesnocancel(
+                title="Update Available",
+                message=f"A new version[V{latest_version}] is available.\n If you are using InstallVersion, we don't recommend download it.\n Do you want to download?\n Yes: Open GitHub\n No: Latest DownLoad\n Cancel: Do nothing"
+            )
             if result == True:
-                 open_github() 
+                open_github()
             if result == False:
-                 wbb.open(DOWNLOAD_URL)
-                  
-             
-            
-            
+                wbb.open(DOWNLOAD_URL)
+            if label is not None and hasattr(label, "winfo_exists") and label.winfo_exists():
+                label.config(text=f"You can use a new version[@V{latest_version}] now.")
         else:
-            label.config(text="You are using the latest version.")
+            if label is not None and hasattr(label, "winfo_exists") and label.winfo_exists():
+                label.config(text="You are using the latest version.")
             mb.showinfo("Update is nothing.", "Not find a new version, You are using the latest version now.")
     except Exception as e:
-        label.config(text=f"Update Check Error: {e}")
+        if label is not None and hasattr(label, "winfo_exists") and label.winfo_exists():
+            label.config(text=f"Update Check Error: {e}")
 
 def load_settings():
     """Settings.txtを行ごとに読み込んで辞書で返す"""
